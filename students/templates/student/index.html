@@ -1,0 +1,38 @@
+
+{% extends 'base.html'%}
+
+{% block style%}
+table,th,td {
+    border: 2px solid black;
+}
+
+{% endblock style%}
+
+{% block start %}
+    <h1> Student Management System</h1>
+  
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Marks</th>
+            <th>Remarks</th>
+        </tr>
+        {% for s in student %}
+        <tr>
+            <td>{{s.id}}</td>
+            <td>{{s.name}}</td>
+            <td>{{s.course}}</td>
+            <td>{{s.marks}}</td>
+            <td>
+                {% if s.marks > 90 %}
+                Excellent
+                {% else %}
+                Very Good
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock start %}
