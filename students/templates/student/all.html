@@ -1,0 +1,14 @@
+{% block start%}
+
+<h1> All Student Data </h1>
+
+{% if students %}
+   <h2> Student List: </h2>
+    {% for student in students%}
+        <li>{{student.id}} - {{student.name}} - {{student.email}} - {{student.course}} - {{student.city}}</li>
+    {% endfor %}
+{% else %}
+<h2> No Data </h2>
+{% endif %}
+
+{% endblock start%}

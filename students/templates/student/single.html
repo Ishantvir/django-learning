@@ -1,0 +1,12 @@
+{% block start%}
+
+<h1> Single Student Data </h1>
+
+{% if student %}
+   <h2> Student</h2>
+   <h3> {{ student.name }} - {{ student.email }} - {{ student.course }} - {{ student.city }} </h3>
+{% else %}
+<h2> No Data </h2>
+{% endif %}
+
+{% endblock start%}
