@@ -1,5 +1,6 @@
 from django.shortcuts import render 
 from students.models import Student
+from students.forms import StudentForm
 
 # Create your views here.
 def index(request):
@@ -18,3 +19,10 @@ def all_data(request):
 def single_data(request):
     student= Student.objects.get(id=1)
     return render(request, 'student/single.html', {'student': student})
+
+def add_student(request):
+    addStu = StudentForm(auto_id=True)
+    # addStu = StudentForm(initial={'email':'abc12@example.com'})
+    # addStu = StudentForm(label_suffix=':  ')
+    # addStu = StudentForm(auto_id=True, field_order=['name','city'])
+    return render(request, 'student/add_student.html', {'addStu':addStu})
