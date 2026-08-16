@@ -14,3 +14,7 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['name','email','age', 'course', 'address','marks', 'city']
+        labels = {'name':'Enter Name', 'email': 'Enter Email'}
+        error_messages = {
+            'email':{'requires':'Email is required.'}
+        }
