@@ -1,0 +1,14 @@
+{% block start %}
+<h1> UpdateStudent </h1>
+
+<form action=" " method='post' novalidate>
+    {% csrf_token %}
+    {{ upStu.as_p}}
+    {% comment %} {{ upStu.as_ul}} {% endcomment %}
+
+    {% comment %} {{ upStu.name}}
+    {{ upStu.age}}
+    {{ upStu.course}} {% endcomment %}
+    <input type='submit' value='Submit'>
+</form>
+{% endblock start%}
