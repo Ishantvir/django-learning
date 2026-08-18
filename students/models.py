@@ -7,6 +7,6 @@ class Student(models.Model):
     email = models.EmailField()
     age =  models.IntegerField()
     course = models.CharField(max_length=100)
-    address = models.TextField(null=True, blank=True)
+    address = models.TextField()
     marks = models.IntegerField()
     city = models.CharField(max_length=100)

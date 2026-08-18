@@ -1,14 +1,39 @@
+{% extends "base.html" %}
 {% block start%}
 
-<h1> All Student Data </h1>
+<h1 class="text-center"> All Student Data </h1>
 
 {% if students %}
-   <h2> Student List: </h2>
-    {% for student in students%}
-        <li>{{student.id}} - {{student.name}} - {{student.email}} - {{student.course}} - {{student.city}}</li>
-    {% endfor %}
+<h2 class="text-center"> Student List: </h2>
+<div class="container">
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Course</th>
+                <th scope="col">City</th>
+                <th scope="col">Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students%}
+            <tr>
+                <th scope="row">{{student.id}}</th>
+                <td>{{student.name}}</td>
+                <td>{{student.email}}</td>
+                <td>{{student.course}}</td>
+                <td>{{student.city}}</td>
+                <td>{{student.marks}}</td>
+            </tr>
+            {% endfor %}
+        
+        </tbody>
+    </table>
+</div>
 {% else %}
-<h2> No Data </h2>
+<h2 class="text-center"> No Data </h2>
 {% endif %}
 
 {% endblock start%}
