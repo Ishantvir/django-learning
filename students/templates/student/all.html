@@ -5,30 +5,44 @@
 
 {% if students %}
 <h2 class="text-center"> Student List: </h2>
+<div class="container d-flex justify-content-center mb-3">
+    <form class="d-flex" role="search" action="{% url 'single_data' %}" method="get">
+        <input name='q' value = "{{ search_term }}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>
 <div class="container">
     <table class="table table-dark table-striped-columns">
         <thead>
             <tr>
-                <th scope="col">ID</th>
+                <th scope="col" class="text-center">ID</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Course</th>
                 <th scope="col">City</th>
-                <th scope="col">Marks</th>
+                <th scope="col" class="text-center">Marks</th>
+                <th scope="col" class="text-center">Edit/Delete</th>
             </tr>
         </thead>
         <tbody>
             {% for student in students%}
             <tr>
-                <th scope="row">{{student.id}}</th>
+                <th scope="row" class="text-center">{{student.id}}</th>
                 <td>{{student.name}}</td>
                 <td>{{student.email}}</td>
                 <td>{{student.course}}</td>
                 <td>{{student.city}}</td>
-                <td>{{student.marks}}</td>
+                <td class="text-center">{{student.marks}}</td>
+                <td>
+                    <div class="container text-center">
+                        <button type="button" class="btn btn-success"><a href="{% url 'update_student' student.id %}" class="nav-link">Edit</a>
+                        </button>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
-        
+
         </tbody>
     </table>
 </div>

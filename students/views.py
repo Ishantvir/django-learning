@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 from students.models import Student
 from students.forms import StudentForm
 
@@ -14,12 +15,19 @@ def index(request):
     return render(request, 'student/index.html', context= {'page':'Student Management','student':students})
 
 def all_data(request):
-    all_students = Student.objects.all()
+    all_students = Student.objects.all().order_by('id')
     return render(request, 'student/all.html', {'students': all_students})
 
-def single_data(request, id):
-    student= Student.objects.get(id=id)
-    return render(request, 'student/single.html', {'student': student})
+def single_data(request ):
+    search_term = request.GET.get('q', '')
+    student = Student.objects.none()
+    if search_term:
+        student = Student.objects.filter(
+        Q(name__icontains=search_term) |
+        Q(city__icontains=search_term) |
+        Q(email__icontains=search_term)
+    )
+    return render(request, 'student/single.html', {'student': student, 'search_term': search_term})
 
 def add_student(request):
     if request.method == 'POST':
@@ -29,11 +37,12 @@ def add_student(request):
             em = addStu.cleaned_data['email']
             ag = addStu.cleaned_data['age']
             cu = addStu.cleaned_data['course']
+            ads = addStu.cleaned_data['address']
             mks = addStu.cleaned_data['marks']
             ct = addStu.cleaned_data['city']
 
             ## Saved To Database
-            stu = Student(name = nm, email = em, age = ag, course = cu, marks = mks, city = ct)
+            stu = Student(name = nm, email = em, age = ag, course = cu,address=ads, marks = mks, city = ct)
             stu.save()
             return HttpResponseRedirect('/addsuccess/')
 

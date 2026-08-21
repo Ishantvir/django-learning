@@ -1,14 +1,69 @@
+{% extends "base.html" %}
 {% block start %}
-<h1> Add Student </h1>
+<div class="container mt-4">
+    <h1>Add Student</h1>
 
-<form action=" " method='post' novalidate>
-    {% csrf_token %}
-    {{ addStu.as_p}}
-    {% comment %} {{ addStu.as_ul}} {% endcomment %}
+    
+    {% if addStu.errors %}
+        <div class="alert alert-danger">
+            Please fix the errors below.
+            {{ addStu.non_field_errors }}
+        </div>
+    {% endif %}
 
-    {% comment %} {{ addStu.name}}
-    {{ addStu.age}}
-    {{ addStu.course}} {% endcomment %}
-    <input type='submit' value='Submit'>
-</form>
-{% endblock start%}
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        
+        <!-- Name Field -->
+        <div class="mb-3">
+            <label for="studentName" class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" id="studentName" value="{{ addStu.name.value|default:'' }}">
+            <div class="text-danger">{{ addStu.name.errors }}</div>
+        </div>
+        
+        <!-- Email Field -->
+        <div class="mb-3">
+            <label for="studentEmail" class="form-label">Email address</label>
+            <input type="email" name="email" class="form-control" id="studentEmail" value="{{ addStu.email.value|default:'' }}">
+            <div class="text-danger">{{ addStu.email.errors }}</div>
+        </div>
+        
+        <!-- Age Field (New) -->
+        <div class="mb-3">
+            <label for="studentAge" class="form-label">Age</label>
+            <input type="number" name="age" class="form-control" id="studentAge" value="{{ addStu.age.value|default:'' }}">
+            <div class="text-danger">{{ addStu.age.errors }}</div>
+        </div>
+
+        <!-- Course Field (New) -->
+        <div class="mb-3">
+            <label for="studentCourse" class="form-label">Course</label>
+            <input type="text" name="course" class="form-control" id="studentCourse" value="{{ addStu.course.value|default:'' }}">
+            <div class="text-danger">{{ addStu.course.errors }}</div>
+        </div>
+
+        <!-- AAddress (New) -->
+        <div class="mb-3">
+            <label for="studentAddress" class="form-label">Address</label>
+            <input type="text" name="address" class="form-control" id="studentAddress" value="{{ addStu.address.value|default:'' }}">
+            <div class="text-danger">{{ addStu.address.errors }}</div>
+        </div>
+
+        <!-- Marks Field (New) -->
+        <div class="mb-3">
+            <label for="studentMarks" class="form-label">Marks</label>
+            <input type="number" name="marks" class="form-control" id="studentMarks" value="{{ addStu.marks.value|default:'' }}">
+            <div class="text-danger">{{ addStu.marks.errors }}</div>
+        </div>
+
+        <!-- City Field (New) -->
+        <div class="mb-3">
+            <label for="studentCity" class="form-label">City</label>
+            <input type="text" name="city" class="form-control" id="studentCity" value="{{ addStu.city.value|default:'' }}">
+            <div class="text-danger">{{ addStu.city.errors }}</div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock start %}
