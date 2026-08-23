@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 from students.models import Student
@@ -67,6 +67,14 @@ def update_student(request, id):
         upStu = StudentForm(instance=student)
 
     return render(request,'student/update_student.html',{'upStu': upStu})
+
+def delete_student(request, id):
+    student = get_object_or_404(Student, id=id)
+
+    if request.method == "POST":
+        student.delete()
+        return redirect('/')
+    return redirect('/')
 
 def add_success(request):
     return render(request, 'student/success.html')

@@ -37,7 +37,10 @@
                     <div class="container text-center">
                         <button type="button" class="btn btn-success"><a href="{% url 'update_student' student.id %}" class="nav-link">Edit</a>
                         </button>
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <form action="{% url 'delete_student' student.pk %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{ student.name }}?');">Delete</button>
+                        </form>
                     </div>
                 </td>
             </tr>
