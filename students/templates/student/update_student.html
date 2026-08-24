@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 {% block start %}
+
+<nav class='navbar bg-body-tertiary shadow-lg'>
+    <div class='container-fluid'>
+            <a class='navbar-brand'> {{ user.first_name }} {{ user.last_name}} </a>
+        <div class='d-flex gap-3'>
+            <a href='{% url "all_data" %}' class='btn btn-outline-primary'>View Students</a>
+            <a href='{% url "logout_page" %}' class='btn btn-outline-danger'>Logout</a>
+        </div>
+    </div>
+</nav>
+
 <div class="container mt-4">
     <h1>Update Student</h1>
 

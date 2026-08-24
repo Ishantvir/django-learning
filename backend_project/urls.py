@@ -1,10 +1,13 @@
 from django.contrib import admin
 from django.urls import path
-from students.views import index, all_data, single_data, add_student, add_success, update_student, update_success, delete_student
+from students.views import index, all_data, single_data, add_student, add_success, update_student, update_success, delete_student, login_page, register_page, logout_page
 
 urlpatterns = [
+    path('', login_page, name='login_page'),
+    path('register/', register_page, name='register_page'),
+    path('logout/', logout_page, name='logout_page'),
     path('admin/', admin.site.urls),
-    path('', all_data, name='all_data'),
+    path('view/', all_data, name='all_data'),
     path('all/', index, name='index'),
     path('single/', single_data, name='single_data'),
     path('addstudent/', add_student, name='add_student'),

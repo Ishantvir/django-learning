@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% block start%}
 
+<nav class='navbar bg-body-tertiary shadow-lg'>
+    <div class='container-fluid'>
+            <a class='navbar-brand'> {{ user.first_name }} {{ user.last_name}} </a>
+        <div class='d-flex gap-3'>
+            <a href='{% url "add_student" %}' class='btn btn-outline-success'>Add Student</a>
+            <a href='{% url "logout_page" %}' class='btn btn-outline-danger'>Logout</a>
+        </div>
+    </div>
+</nav>
+
 <h1 class="text-center"> All Student Data </h1>
 
 {% if students %}

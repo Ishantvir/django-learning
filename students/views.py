@@ -3,6 +3,10 @@ from django.http import HttpResponseRedirect
 from django.db.models import Q
 from students.models import Student
 from students.forms import StudentForm
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -14,10 +18,12 @@ def index(request):
 
     return render(request, 'student/index.html', context= {'page':'Student Management','student':students})
 
+@login_required(login_url='/')
 def all_data(request):
     all_students = Student.objects.all().order_by('id')
     return render(request, 'student/all.html', {'students': all_students})
 
+@login_required(login_url='/')
 def single_data(request ):
     search_term = request.GET.get('q', '')
     student = Student.objects.none()
@@ -29,6 +35,7 @@ def single_data(request ):
     )
     return render(request, 'student/single.html', {'student': student, 'search_term': search_term})
 
+@login_required(login_url='/')
 def add_student(request):
     if request.method == 'POST':
         addStu = StudentForm(request.POST)
@@ -53,6 +60,7 @@ def add_student(request):
         # addStu = StudentForm(auto_id=True, field_order=['name','city'])
     return render(request, 'student/add_student.html', {'addStu':addStu})
 
+@login_required(login_url='/')
 def update_student(request, id):
     student = Student.objects.get(id=id)
 
@@ -68,6 +76,7 @@ def update_student(request, id):
 
     return render(request,'student/update_student.html',{'upStu': upStu})
 
+@login_required(login_url='/')
 def delete_student(request, id):
     student = get_object_or_404(Student, id=id)
 
@@ -81,3 +90,53 @@ def add_success(request):
 
 def update_success(request):
     return render(request, 'student/updatesuccess.html')
+
+def login_page(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not User.objects.filter(username=username).exists():
+            messages.error(request, 'Invalid Username')
+            return redirect('/')
+
+        user =authenticate(username = username, password = password)
+
+        if user is None:
+            messages.error(request, 'Invalid Password')
+            return redirect('/')
+        else:
+            login(request, user)
+            return redirect('/view/')
+
+    return render(request, 'Auth/login.html')
+
+def register_page(request):
+    if request.method == "POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = User.objects.filter(username=username)
+
+        if user.exists():
+            messages.info(request, 'Username Already Taken. Please Choose Another Username')
+            return redirect('register_page')
+
+        user = User.objects.create_user(
+            first_name=first_name,
+            last_name=last_name,
+            username=username
+        )
+
+        user.set_password(password)
+        user.save()
+        messages.info(request, 'Registration Successful. Please Login to Continue')
+        return redirect('register_page')
+
+    return render(request, 'Auth/register.html')
+
+def logout_page(request):
+    logout(request)
+    return redirect('/')
