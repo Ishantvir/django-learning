@@ -6,7 +6,7 @@ from students.forms import StudentForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -19,7 +19,7 @@ def index(request):
     return render(request, 'student/index.html', context= {'page':'Student Management','student':students})
 
 @login_required(login_url='/')
-# @permission_required('students.view_student', raise_exception=True)
+# @permission_required('students.view_student', raise_exception=True) #### import this with login_required, permission_requied like this need for future reference
 def all_data(request):
     if not request.user.has_perm('students.view_student'):
         return HttpResponseForbidden('You Cannot View Document')
@@ -38,7 +38,7 @@ def single_data(request ):
     )
     return render(request, 'student/single.html', {'student': student, 'search_term': search_term})
 
-## old add
+## old add (for my future reference)
 # @login_required(login_url='/')
 # def add_student(request):
 #     if not request.user.has_perm('students.add_student'):
@@ -66,7 +66,7 @@ def single_data(request ):
 #         # addStu = StudentForm(auto_id=True, field_order=['name','city'])
 #     return render(request, 'student/add_student.html', {'addStu':addStu})
 
-## new 
+## new add
 @login_required(login_url='/')
 def add_student(request):
     if not request.user.has_perm('students.add_student'):
