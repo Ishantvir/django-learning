@@ -38,6 +38,35 @@ def single_data(request ):
     )
     return render(request, 'student/single.html', {'student': student, 'search_term': search_term})
 
+## old add
+# @login_required(login_url='/')
+# def add_student(request):
+#     if not request.user.has_perm('students.add_student'):
+#             return HttpResponseForbidden('You Cannot Add Student.')
+#     if request.method == 'POST':
+#         addStu = StudentForm(request.POST)
+#         if addStu.is_valid():
+#             nm = addStu.cleaned_data['name']
+#             em = addStu.cleaned_data['email']
+#             ag = addStu.cleaned_data['age']
+#             cu = addStu.cleaned_data['course']
+#             ads = addStu.cleaned_data['address']
+#             mks = addStu.cleaned_data['marks']
+#             ct = addStu.cleaned_data['city']
+
+#             ## Saved To Database
+#             stu = Student(name = nm, email = em, age = ag, course = cu,address=ads, marks = mks, city = ct)
+#             stu.save()
+#             return HttpResponseRedirect('/addsuccess/')
+
+#     else:
+#         addStu = StudentForm(auto_id=True)
+#         # addStu = StudentForm(initial={'email':'abc12@example.com'})
+#         # addStu = StudentForm(label_suffix=':  ')
+#         # addStu = StudentForm(auto_id=True, field_order=['name','city'])
+#     return render(request, 'student/add_student.html', {'addStu':addStu})
+
+## new 
 @login_required(login_url='/')
 def add_student(request):
     if not request.user.has_perm('students.add_student'):
@@ -45,28 +74,19 @@ def add_student(request):
     if request.method == 'POST':
         addStu = StudentForm(request.POST)
         if addStu.is_valid():
-            nm = addStu.cleaned_data['name']
-            em = addStu.cleaned_data['email']
-            ag = addStu.cleaned_data['age']
-            cu = addStu.cleaned_data['course']
-            ads = addStu.cleaned_data['address']
-            mks = addStu.cleaned_data['marks']
-            ct = addStu.cleaned_data['city']
-
             ## Saved To Database
-            stu = Student(name = nm, email = em, age = ag, course = cu,address=ads, marks = mks, city = ct)
-            stu.save()
+            addStu.save()
             return HttpResponseRedirect('/addsuccess/')
-
     else:
         addStu = StudentForm(auto_id=True)
-        # addStu = StudentForm(initial={'email':'abc12@example.com'})
-        # addStu = StudentForm(label_suffix=':  ')
-        # addStu = StudentForm(auto_id=True, field_order=['name','city'])
     return render(request, 'student/add_student.html', {'addStu':addStu})
+
 
 @login_required(login_url='/')
 def update_student(request, id):
+    if not request.user.has_perm('students.change_student'):
+        return HttpResponseForbidden('You Cannot Update Student.')
+    
     student = Student.objects.get(id=id)
 
     if request.method == 'POST':
@@ -83,7 +103,7 @@ def update_student(request, id):
 
 @login_required(login_url='/')
 def delete_student(request, id):
-    if not request.user.has_perm('student.delete_student'):
+    if not request.user.has_perm('students.delete_student'):
         return HttpResponseForbidden('You Cannot Delete the Data.')
     student = get_object_or_404(Student, id=id)
 
