@@ -25,8 +25,8 @@ This project demonstrates Django CRUD operations, authentication, authorization,
 
 | Technology   | Used             |
 | ------------ | ---------------- |
-| Python       | 3.x              |
-| Django       | 5.x              |
+| Python       | 3.11.7           |
+| Django       | 5.0.1            |
 | PostgreSQL   | Database         |
 | HTML         | Templates        |
 | CSS          | Frontend Styling |
