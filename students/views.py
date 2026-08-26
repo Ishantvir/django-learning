@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.db.models import Q
 from students.models import Student
 from students.forms import StudentForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 # Create your views here.
 def index(request):
@@ -19,7 +19,10 @@ def index(request):
     return render(request, 'student/index.html', context= {'page':'Student Management','student':students})
 
 @login_required(login_url='/')
+# @permission_required('students.view_student', raise_exception=True)
 def all_data(request):
+    if not request.user.has_perm('students.view_student'):
+        return HttpResponseForbidden('You Cannot View Document')
     all_students = Student.objects.all().order_by('id')
     return render(request, 'student/all.html', {'students': all_students})
 
@@ -37,6 +40,8 @@ def single_data(request ):
 
 @login_required(login_url='/')
 def add_student(request):
+    if not request.user.has_perm('students.add_student'):
+            return HttpResponseForbidden('You Cannot Add Student.')
     if request.method == 'POST':
         addStu = StudentForm(request.POST)
         if addStu.is_valid():
@@ -78,11 +83,13 @@ def update_student(request, id):
 
 @login_required(login_url='/')
 def delete_student(request, id):
+    if not request.user.has_perm('student.delete_student'):
+        return HttpResponseForbidden('You Cannot Delete the Data.')
     student = get_object_or_404(Student, id=id)
 
     if request.method == "POST":
         student.delete()
-        return redirect('/')
+        return redirect('/')    
     return redirect('/')
 
 def add_success(request):
