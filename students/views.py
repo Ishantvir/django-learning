@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from students.serializers import *
 
 # Create your views here.
 def index(request):
@@ -167,3 +170,21 @@ def register_page(request):
 def logout_page(request):
     logout(request)
     return redirect('/')
+
+
+''' REST API '''
+@api_view(['GET'])
+def home(request):
+    student_objs = Student.objects.all()
+    serailizer = StudentSerializer(student_objs, many=True)
+    return Response({'status': 200, 'payload': serailizer.data})
+
+@api_view(['POST'])
+def post_student(request):
+    serializer = StudentSerializer(data = request.data)
+
+    if not serializer.is_valid():
+        return Response({'status': 403, 'message':'Something went wrong.'})
+
+    serializer.save()
+    return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
