@@ -176,7 +176,7 @@ def logout_page(request):
 @api_view(['GET'])
 def home(request):
     student_objs = Student.objects.all()
-    serailizer = StudentSerializer(student_objs, many=True)
+    serailizer = StudentSerializer(student_objs.order_by('id'), many=True)
     return Response({'status': 200, 'payload': serailizer.data})
 
 @api_view(['POST'])
@@ -188,3 +188,36 @@ def post_student(request):
 
     serializer.save()
     return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
+
+@api_view(['PUT'])
+def put_student(request, id):
+    try:
+        student_obj = Student.objects.get(id=id)
+
+        serializer = StudentSerializer(student_obj, data = request.data)
+        
+        if not serializer.is_valid():
+            return Response({'status': 403, 'error': serializer.errors, 'message':'Something went wrong.'})
+        
+        serializer.save()
+        return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
+
+    except Exception as e:
+        return Response({'status': 403, 'message':'Invalid id'})
+    
+@api_view(['PATCH'])
+def patch_student(request, id):
+    try:
+        student_obj = Student.objects.get(id=id)
+
+        serializer = StudentSerializer(student_obj, data = request.data, partial=True)
+        
+        if not serializer.is_valid():
+            return Response({'status': 403, 'error': serializer.errors, 'message':'Something went wrong.'})
+        
+        serializer.save()
+        return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
+
+    except Exception as e:
+        return Response({'status': 403, 'message':str(e)})
+    

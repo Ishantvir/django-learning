@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from students.views import index, all_data, single_data, add_student, add_success, update_student, update_success, delete_student, login_page, register_page, logout_page, home, post_student
+from students.views import index, all_data, single_data, add_student, add_success, update_student, update_success, delete_student, login_page, register_page, logout_page, home, post_student, put_student, patch_student
 
 urlpatterns = [
     path('', login_page, name='login_page'),
@@ -16,5 +16,7 @@ urlpatterns = [
     path('addsuccess/', add_success, name='add_success'),
     path('updatesuccess/', update_success, name='update_success'),
     path('home/', home , name='home'),
-    path('poststu/', post_student , name='post_student')
+    path('poststu/', post_student , name='post_student'),
+    path('updatestu/<int:id>/', put_student , name='put_student'),
+    path('patchstu/<int:id>/', patch_student , name='patch_student')
 ]
