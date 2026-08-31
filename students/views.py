@@ -220,4 +220,14 @@ def patch_student(request, id):
 
     except Exception as e:
         return Response({'status': 403, 'message':str(e)})
+
+@api_view(['DELETE'])
+def del_student(request, id):
+    try:
+        student_obj = Student.objects.get(id=id)
+        student_obj.delete()
+        return Response({'status': 200, 'message': 'Delete'})
+
+    except Exception as e:
+        return Response({'status': 403, 'message':str(e)})
     
