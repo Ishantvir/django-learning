@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from students.serializers import *
+from rest_framework.views import APIView
+from rest_framework import status
 
 # Create your views here.
 def index(request):
@@ -173,61 +175,110 @@ def logout_page(request):
 
 
 ''' REST API '''
-@api_view(['GET'])
-def home(request):
-    student_objs = Student.objects.all()
-    serailizer = StudentSerializer(student_objs.order_by('id'), many=True)
-    return Response({'status': 200, 'payload': serailizer.data})
+# @api_view(['GET'])
+# def home(request):
+#     student_objs = Student.objects.all()
+#     serailizer = StudentSerializer(student_objs.order_by('id'), many=True)
+#     return Response({'status': 200, 'payload': serailizer.data})
 
-@api_view(['POST'])
-def post_student(request):
-    serializer = StudentSerializer(data = request.data)
+# @api_view(['POST'])
+# def post_student(request):
+#     serializer = StudentSerializer(data = request.data)
 
-    if not serializer.is_valid():
-        return Response({'status': 403, 'error': serializer.errors, 'message':'Something went wrong.'})
+#     if not serializer.is_valid():
+#         return Response({'status': 403, 'error': serializer.errors, 'message':'Something went wrong.'})
 
-    serializer.save()
-    return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
+#     serializer.save()
+#     return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
 
-@api_view(['PUT'])
-def put_student(request, id):
-    try:
-        student_obj = Student.objects.get(id=id)
+# @api_view(['PUT'])
+# def put_student(request, id):
+#     try:
+#         student_obj = Student.objects.get(id=id)
 
-        serializer = StudentSerializer(student_obj, data = request.data)
+#         serializer = StudentSerializer(student_obj, data = request.data)
         
-        if not serializer.is_valid():
-            return Response({'status': 403, 'error': serializer.errors, 'message':'Something went wrong.'})
+#         if not serializer.is_valid():
+#             return Response({'status': 403, 'error': serializer.errors, 'message':'Something went wrong.'})
         
-        serializer.save()
-        return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
+#         serializer.save()
+#         return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
 
-    except Exception as e:
-        return Response({'status': 403, 'message':'Invalid id'})
+#     except Exception as e:
+#         return Response({'status': 403, 'message':'Invalid id'})
     
-@api_view(['PATCH'])
-def patch_student(request, id):
-    try:
-        student_obj = Student.objects.get(id=id)
+# @api_view(['PATCH'])
+# def patch_student(request, id):
+#     try:
+#         student_obj = Student.objects.get(id=id)
 
-        serializer = StudentSerializer(student_obj, data = request.data, partial=True)
+#         serializer = StudentSerializer(student_obj, data = request.data, partial=True)
         
-        if not serializer.is_valid():
-            return Response({'status': 403, 'error': serializer.errors, 'message':'Something went wrong.'})
+#         if not serializer.is_valid():
+#             return Response({'status': 403, 'error': serializer.errors, 'message':'Something went wrong.'})
         
-        serializer.save()
-        return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
+#         serializer.save()
+#         return Response({'status': 200, 'payload': serializer.data, 'message': 'Data Saved'})
 
-    except Exception as e:
-        return Response({'status': 403, 'message':str(e)})
+#     except Exception as e:
+#         return Response({'status': 403, 'message':str(e)})
 
-@api_view(['DELETE'])
-def del_student(request, id):
-    try:
-        student_obj = Student.objects.get(id=id)
-        student_obj.delete()
-        return Response({'status': 200, 'message': 'Delete'})
+# @api_view(['DELETE'])
+# def del_student(request, id):
+#     try:
+#         student_obj = Student.objects.get(id=id)
+#         student_obj.delete()
+#         return Response({'status': 200, 'message': 'Delete'})
 
-    except Exception as e:
-        return Response({'status': 403, 'message':str(e)})
+#     except Exception as e:
+#         return Response({'status': 403, 'message':str(e)})
     
+
+''' APIView Class Based View'''
+
+class StudentAPIView(APIView):
+    def get(self, request):
+        stu_obj = Student.objects.all()
+        serializer = StudentSerializer(stu_obj.order_by('id'), many=True)
+        return Response({'payload':serializer.data, 'status':status.HTTP_200_OK})
+    
+    def post(self, request):
+        serializer = StudentSerializer(data = request.data)
+
+        if not serializer.is_valid():
+            return Response({'errors': serializer.errors, 'message':'Something Went Wrong', 'status':status.HTTP_400_BAD_REQUEST})
+
+        serializer.save()
+        return Response({'payload':serializer.data, 'message':'Data Saved', 'status':status.HTTP_201_CREATED})
+
+    def put(self, request):
+        try:
+            stu_obj = Student.objects.get(id=request.data['id'])
+            serializer = StudentSerializer(stu_obj, data=request.data)
+            if not serializer.is_valid():
+                return Response({'errors': serializer.errors, 'message':'Something Went Wrong', 'status':status.HTTP_400_BAD_REQUEST})
+
+            serializer.save()
+            return Response({'payload': serializer.data, 'message':'Data Updated', 'status':status.HTTP_200_OK})
+        except Student.DoesNotExist:
+            return Response({'message': "invalid ID", 'status': status.HTTP_404_NOT_FOUND})
+
+    def patch(self, request):
+        try:
+            stu_obj = Student.objects.get(id=request.data['id'])
+            serializer = StudentSerializer(stu_obj, data=request.data, partial=True)
+            if not serializer.is_valid():
+                return Response({'errors': serializer.errors, 'message':'Something Went Wrong', 'status':status.HTTP_400_BAD_REQUEST}) 
+
+            serializer.save()
+            return Response({'payload': serializer.data, 'message':'Data Updated', 'status':status.HTTP_200_OK})
+        except Student.DoesNotExist:
+            return Response({'message': "invalid ID", 'status': status.HTTP_404_NOT_FOUND})
+
+    def delete(self, request):
+        try:
+            stu_obj = Student.objects.get(id=request.data['id'])
+            stu_obj.delete()
+            return Response({'message': 'Data Deleted', 'status':status.HTTP_200_OK})
+        except Student.DoesNotExist:
+            return Response({'message':'Invalid ID','status':status.HTTP_404_NOT_FOUND})
