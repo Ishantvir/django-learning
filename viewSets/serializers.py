@@ -8,7 +8,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
         ''' Use any one from below'''
         # fields = ['name', 'email','age','course']
-        exclude = ['id', 'user']
+        exclude = ['user']
         # fields = '__all__'
 
     def validate(self, data):
