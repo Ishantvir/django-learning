@@ -59,9 +59,9 @@ class filterOrderSearch(ListAPIView):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Student.objects.filter(user_id = user)
+    def get_queryset(self):
+        user = self.request.user
+        return Student.objects.filter(user_id = user)
 
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     filterset_fields = ['id', 'name', 'city', 'age']
