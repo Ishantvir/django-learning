@@ -1,8 +1,2 @@
 Django==5.0.1
 python-dotenv==1.2.3
-
-
-{
-  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4ODg2MjM3NCwiaWF0IjoxNzg4Nzc1OTc0LCJqdGkiOiI3MGZjMGYwZTAxODc0ZTM2YWIwYjI4MGRjZmU5ODJhNiIsInVzZXJfaWQiOiIyIn0.HgepCFyd1hImHGwgljVr_V8crafSi55fueRcP_L4NT0",
-  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzg4Nzc2Mjc0LCJpYXQiOjE3ODg3NzU5NzUsImp0aSI6IjIzODE5MDMyYWRmYTQ3MmY4MWUwYWE3ZDM3ZTg1ZWNjIiwidXNlcl9pZCI6IjIifQ.E9yvuwNs2e6aY2taExMHiANwAguW7caSLBx-uAJsgvQ"
-}

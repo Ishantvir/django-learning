@@ -12,3 +12,4 @@ class Student(models.Model):
     address = models.TextField()
     marks = models.IntegerField()
     city = models.CharField(max_length=100)
+

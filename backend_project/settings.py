@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'students',
     'viewSets',
-    'rest_framework'
+    'rest_framework', 
+    'django_filters',
 ]
 
 MIDDLEWARE = [
