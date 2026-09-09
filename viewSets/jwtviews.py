@@ -9,12 +9,21 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.generics import ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from .mypagination import MyPageNumberPagination, MyLimitOffsetPagination, MyCursorPagination
 
+#Pagination, Permission and Authentication
 class StudentModelViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    authentication_classes = [JWTAuthentication]
+
+    # authentication_classes = [JWTAuthentication]
+    authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
+
+    # pagination_class = MyPageNumberPagination
+    # pagination_class = MyLimitOffsetPagination
+    pagination_class = MyCursorPagination
+
 
 ## Filtering
 class StuList(ListAPIView):
@@ -53,6 +62,7 @@ class orderingf(ListAPIView):
     # ordering_fields = ['name', 'city]
     ordering_fields = '__all__'
 
+''' All filtering concept'''
 class filterOrderSearch(ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
@@ -65,5 +75,7 @@ class filterOrderSearch(ListAPIView):
 
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     filterset_fields = ['id', 'name', 'city', 'age']
-    search_fields = ['^name', 'city']
+    search_fields = ['^name', '^city']
     ordering_fields = ['id', 'name', 'city']
+
+
