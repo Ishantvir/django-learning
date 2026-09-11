@@ -3,13 +3,15 @@ from  students.models import Student
 from viewSets.serializers import StudentSerializer
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.generics import ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .mypagination import MyPageNumberPagination, MyLimitOffsetPagination, MyCursorPagination
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
+from .throttling import auraRateThrottle
 
 #Pagination, Permission and Authentication
 class StudentModelViewSet(viewsets.ModelViewSet):
@@ -78,4 +80,11 @@ class filterOrderSearch(ListAPIView):
     search_fields = ['^name', '^city']
     ordering_fields = ['id', 'name', 'city']
 
+class StudentThrottling(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
 
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    # throttle_classes = [AnonRateThrottle,UserRateThrottle]
+    throttle_classes = [AnonRateThrottle, auraRateThrottle]

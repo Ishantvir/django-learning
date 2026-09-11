@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 # from .views import StudentList, StudentCreate, StudentRetrieve,StudentUpdate,StudentDestroy
 from .views import LCStudentAPI, RUDStudentAPI, StudentList, StudentCreate, StudentRetrieve, StudentUpdate, StudentDestroy, StudentListCreate, StudentRetrieveUpdateDestroy, StudentViewSet, StudentModelViewSet, StudentModelViewSetRead
-from .jwtviews import StudentModelViewSet, StuList, Studjfilter, searchf, orderingf, filterOrderSearch
+from .jwtviews import StudentModelViewSet, StuList, Studjfilter, searchf, orderingf, filterOrderSearch, StudentThrottling
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
@@ -12,6 +12,7 @@ router = DefaultRouter()
 # router.register('studentapiview', StudentModelViewSet, basename='student')
 # router.register('studentapiview', StudentModelViewSetRead, basename='student')
 router.register('jwt', StudentModelViewSet, basename='student')
+router.register('stu', StudentThrottling, basename='throttling')
 
 urlpatterns = [
     # path('', StudentList.as_view()),

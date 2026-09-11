@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly
 from .custompermission import MyPermission
+from rest_framework.throttling import ScopedRateThrottle
 
 
 ## GenericAPIView and ModelMixin
@@ -76,26 +77,32 @@ class RUDStudentAPI(GenericAPIView, RetrieveModelMixin, UpdateModelMixin, Destro
 class StudentList(ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'viewstu'
 
 class StudentCreate(CreateAPIView):
     queryset=Student.objects.all()
     serializer_class = StudentSerializer
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'modifystu'
 
 class StudentRetrieve(RetrieveAPIView):
     queryset=Student.objects.all()
     serializer_class = StudentSerializer
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'viewstu'
 
 class StudentUpdate(UpdateAPIView):
     queryset=Student.objects.all()
     serializer_class = StudentSerializer
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'modifystu'
 
 class StudentDestroy(DestroyAPIView):
     queryset=Student.objects.all()
     serializer_class = StudentSerializer
-
-class StudentDestroy(DestroyAPIView):
-    queryset=Student.objects.all()
-    serializer_class = StudentSerializer
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'modifystu'
 
 class StudentListCreate(ListCreateAPIView):
     queryset=Student.objects.all()

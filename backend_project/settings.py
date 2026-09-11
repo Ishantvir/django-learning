@@ -140,3 +140,13 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME' : timedelta(days=1),
     'ROTATE_REFRESH_TOKENS' : True,
 }
+
+REST_FRAMEWORK= {
+    'DEFAULT_THROTTLE_RATES' : {
+        'anon' : '2/day',
+        'user' : '5/hour',
+        'aura' : '3/min',
+        'viewstu' : '5/hour',
+        'modifystu' : '2/day',
+    }
+}
