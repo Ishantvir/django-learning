@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'viewSets',
     'rest_framework', 
     'django_filters',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -148,5 +149,13 @@ REST_FRAMEWORK= {
         'aura' : '3/min',
         'viewstu' : '5/hour',
         'modifystu' : '2/day',
-    }
+    },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Student Management System API',
+    'DESCRIPTION': 'API for managing student records',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }

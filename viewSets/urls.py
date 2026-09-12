@@ -6,6 +6,7 @@ from .jwtviews import StudentModelViewSet, StuList, Studjfilter, searchf, orderi
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
+
 router = DefaultRouter()
 
 # router.register('studentapiview', StudentViewSet, basename='student')

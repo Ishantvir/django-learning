@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from students.views import index, all_data, single_data, add_student, add_success, update_student, update_success, delete_student, login_page, register_page, logout_page, StudentAPIView
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
     path('', login_page, name='login_page'),
@@ -21,5 +22,11 @@ urlpatterns = [
     # path('patchstu/<int:id>/', patch_student , name='patch_student'),
     # path('delstu/<int:id>/', del_student , name='del_student'),
     path('student/', StudentAPIView.as_view()),
-    path('mystudent/', include('viewSets.urls'))
+    path('mystudent/', include('viewSets.urls')),
+
+    ## API Schema and Documentation
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
